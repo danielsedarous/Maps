@@ -2,10 +2,27 @@ import { FeatureCollection } from "geojson";
 import { FillLayer } from "react-map-gl";
 
 import rl_data from "./geodata/fullDownload.json";
+import broadband_data from "./geodata/Broadband.json"
 
 function isFeatureCollection(json: any): json is FeatureCollection {
   return json.type === "FeatureCollection";
 }
+
+function accessBroadbandData() : Promise<string[][]>{
+  return fetch("https://api.census.gov/data/2021/acs/acs1/subject/variables?get=NAME,S2802_C03_022E&for=county:*&in=state:*")
+  .then((r) => r.json())
+}
+
+async function getUnderservedCounties(){
+  let underservedCounties : string[] = []
+  const broadbandData = await accessBroadbandData();
+  broadbandData.forEach(county =>{
+    if (parseInt(county[1]) <= 85){
+      underservedCounties.push(county[0])
+    }
+  })
+}
+
 
 export function overlayData(): GeoJSON.FeatureCollection | undefined {
   return isFeatureCollection(rl_data) ? rl_data : undefined;

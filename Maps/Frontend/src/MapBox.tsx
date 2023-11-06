@@ -9,7 +9,7 @@ interface LatLong {
 }
 
 function MapBox() {
-  const ProvidenceLatLong: LatLong = { lat: 41.824, long: -71.4128 };
+  // const ProvidenceLatLong: LatLong = { lat: 41.824, long: -71.4128 };
   const initialZoom = 10;
 
   function onMapClick(e: MapLayerMouseEvent) {
@@ -18,9 +18,9 @@ function MapBox() {
   }
 
   const [viewState, setViewState] = useState({
-    longitude: ProvidenceLatLong.long,
-    latitude: ProvidenceLatLong.lat,
-    zoom: initialZoom,
+    // longitude: ProvidenceLatLong.long,
+    // latitude: ProvidenceLatLong.lat,
+    // zoom: initialZoom,
   });
 
   const [overlay, setOverlay] = useState<GeoJSON.FeatureCollection | undefined>(

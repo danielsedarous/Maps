@@ -1,0 +1,36 @@
+.container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 100vh;
+}
+
+.repl-history {
+  flex: 1 auto;
+  max-height: 55vh;
+  overflow-y: auto;
+  width: 100%;
+}
+
+.repl-input {
+  flex: 0 auto;
+  height: 10vh;
+  width: 100%;
+}
+
+.repl-command-box {
+  flex: 0 auto;
+  width: 90%;
+  max-width: 100%;
+}
+table,
+td {
+  border: 1px solid white;
+  margin: auto;
+  border-collapse: collapse;
+  border: 2px solid rgb(200, 200, 200);
+  font-family: sans-serif;
+  border: 1px solid rgb(190, 190, 190);
+  padding: 5px 10px;
+}

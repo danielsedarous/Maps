@@ -2,6 +2,8 @@ package edu.brown.cs.student.main.server;
 
 import static spark.Spark.after;
 
+import edu.brown.cs.student.main.MapsAreaKeyWordHandler;
+import edu.brown.cs.student.main.MapsBoundingHandler;
 import edu.brown.cs.student.main.data.census.ACSSource;
 import edu.brown.cs.student.main.exceptions.DatasourceException;
 import edu.brown.cs.student.main.data.csv.proxy.CsvData;
@@ -51,6 +53,9 @@ public class Server {
     Spark.get("/view", new ViewHandler(sharedState));
     Spark.get("/search", new SearchHandler(sharedState));
     Spark.get("/broadband", new BroadbandHandler(new ACSSource()));
+    Spark.get("/mapsKeyWord", new MapsAreaKeyWordHandler());
+    Spark.get("/mapsBoundingBox", new MapsBoundingHandler());
+
 
     Spark.init();
     Spark.awaitInitialization();

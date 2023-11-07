@@ -36,6 +36,7 @@ public class Main {
     Spark.get("viewCSV", new ViewHandler(data));
     Spark.get("searchCSV", new SearchHandler(data));
     Spark.get("broadband", new BroadbandHandler(new RealBBSource()));
+    Spark.get("areaKeyWordSearch", new MapsAreaKeyWordHandler());
     // have to go to endpoint mock for the website to not have 404 error
 
     Spark.init();

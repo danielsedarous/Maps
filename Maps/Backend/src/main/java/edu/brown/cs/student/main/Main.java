@@ -5,10 +5,8 @@ import static spark.Spark.after;
 import edu.brown.cs.student.main.Broadband.RealBBSource;
 import edu.brown.cs.student.main.CSV.CSVData;
 import edu.brown.cs.student.main.Exceptions.FactoryFailureException;
-import edu.brown.cs.student.main.Handlers.BroadbandHandler;
-import edu.brown.cs.student.main.Handlers.LoadHandler;
-import edu.brown.cs.student.main.Handlers.SearchHandler;
-import edu.brown.cs.student.main.Handlers.ViewHandler;
+import edu.brown.cs.student.main.Handlers.*;
+
 import java.io.IOException;
 import spark.Spark;
 
@@ -37,6 +35,7 @@ public class Main {
     Spark.get("searchCSV", new SearchHandler(data));
     Spark.get("broadband", new BroadbandHandler(new RealBBSource()));
     Spark.get("areaKeyWordSearch", new MapsAreaKeyWordHandler());
+    Spark.get("boundingBox", new MapsBoundingHandler());
     // have to go to endpoint mock for the website to not have 404 error
 
     Spark.init();

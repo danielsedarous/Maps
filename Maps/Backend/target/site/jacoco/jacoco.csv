@@ -1,6 +1,0 @@
-GROUP,PACKAGE,CLASS,INSTRUCTION_MISSED,INSTRUCTION_COVERED,BRANCH_MISSED,BRANCH_COVERED,LINE_MISSED,LINE_COVERED,COMPLEXITY_MISSED,COMPLEXITY_COVERED,METHOD_MISSED,METHOD_COVERED
-s0,edu.brown.cs.student.main,Creator,0,5,0,0,0,2,0,2,0,2
-s0,edu.brown.cs.student.main,Searcher,8,293,1,21,1,65,1,19,0,9
-s0,edu.brown.cs.student.main,Main,81,0,4,0,25,0,5,0,3,0
-s0,edu.brown.cs.student.main,FactoryFailureException,10,0,0,0,3,0,1,0,1,0
-s0,edu.brown.cs.student.main,Parser,6,53,0,2,2,15,0,3,0,2

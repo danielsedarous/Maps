@@ -1,36 +1,31 @@
-package edu.brown.cs.student.main.Exceptions;
+package edu.brown.cs.student.main.exceptions;
 
 /**
- * The `DatasourceException` class is a custom exception that extends the standard Java `Exception` class.
- * It is designed to represent exceptions specific to data source operations within a software application.
- * This exception may be used to indicate errors or unexpected conditions that occur while accessing or
- * interacting with data sources, providing a more specialized and informative way to handle data-related issues.
+ * This class contains a useful, custom datasource exception that can be used
+ * to indicate issues with data processing.
  */
-public class DatasourceException extends Exception {
+public class DatasourceException extends Exception{
 
-  private final Throwable cause;
+    //variable representing the initiating error (if there is one)
+    private final Throwable cause;
 
-  /**
-   * Constructs a new `DatasourceException` with the specified error message.
-   *
-   * @param message The error message that describes the exception.
-   */
-  public DatasourceException(String message) {
-    super(message);
-    this.cause = null;
-  }
+    /**
+     * This constructor allows for a custom message to be made, and any possible cause errors
+     * to be ignored.
+     * @param message indicating issue
+     */
+    public DatasourceException(String message) {
+        super(message);
+        this.cause = null;
+    }
 
-  /**
-   * Constructs a new `DatasourceException` with the specified error message and a reference to the
-   * underlying cause of the exception.
-   *
-   * @param message The error message that describes the exception.
-   * @param cause   The underlying cause of the exception.
-   */
-  public DatasourceException(String message, Throwable cause) {
-    super(message);
-    this.cause = cause;
-  }
+    /**
+     * This constructor stores a message and other initiating error.
+     * @param message indicating issue
+     * @param cause relevant error
+     */
+    public DatasourceException(String message, Throwable cause) {
+        super(message);
+        this.cause = cause;
+    }
 }
-
-

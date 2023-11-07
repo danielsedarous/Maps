@@ -1,0 +1,51 @@
+PROJECT DETAILS
+Project name: Server
+Team members: @felia and @kwalke19
+Estimated time to complete project: 25 hours
+Link to repo: https://github.com/cs0320-f23/server-KammieD-francesca-elia
+
+DESIGN CHOICES
+Relationships between classes/interfaces: Our Parse class in contained within our LoadHandler class, and our Searcher
+class is contained within our SearchHandler class. This connects our CSV sprint to our Server sprints. Our CSVData class
+serves as a shared state class that is passed in as a parameter for the load, search, and view handlers which allows
+them to refer to the same set of data. We used two interfaces in our implementation. Our RowToList class implements our
+CreatorFromRow interface. We use this class to convert each CSV's row to a List of Strings. Both our ACSSource and
+MockedACSSource classes implement our CensusDataSource interface. This is useful in testing because we are able to pass
+in either class that implements CensusDataSource to our BroadbandHandler class to use as data.
+
+Specific data structures used and why:
+We found it necessary to use Map<String,Object> throughout the serialization and deserialization
+process, as this is how JSON data is presented to the user. We used List<List<String>> to contain
+data; this is inherited from the previous project's functionality, which represented each row of
+data within one large list containing the rows. For our shared data container, we nested
+this within another list so that the data could easily be accessed from the container.
+
+Runtime/space optimizations made: We used the idea of mocking in our TestBroadbandHandler class such that calls did
+not have to be made to the api for every test since this is time inefficient. We also decided to store a hashmap of
+states to state codes in our BroadbandHandler class, such that this could be reused and save space instead of having
+to fetch this every time.
+
+
+ERRORS/BUGS
+Know bugs: N/A
+Checkstyle errors: N/A
+
+TESTS -- Explain the testing suites that you implemented for your program and how each test ensures that a part of the program works.
+TestCSVHandlers:
+Tests for edge cases related to calls made on the handler endpoints. This includes badly
+formed queries to LoadHandler and SearchHandler, attempts to view and search unloaded files, and
+different types of searches within the SearchHandler.
+TestBroadbandHandler:
+Tests for edge and normal cases related to the broadband handler and its interaction with ACSSource,
+as well helper methods. This includes poor and normal API requests.
+
+HOW TO...
+Run the tests: Our test classes (TestCSVHandlers and TestBroadbandHandler) can be run by pressing the green arrow at
+the top right of the screen in IntelliJ; from there, each test contains specific javadocs
+depicting its purpose.
+
+Build and run the program: Our Server class can be ran by by pressing the green arrow at the top right of the screen in
+IntelliJ. Then, click on the provided server link. To load a file, enter "/load?filePath=(insert file here)"
+as the endpoint to http://localhost:. To view that file enter, "/view" - note that the file must have already been loaded.
+To search that file enter,
+"/search?target=(insert target value)&column(insert index or term to search in)&header(insert true/false if present).

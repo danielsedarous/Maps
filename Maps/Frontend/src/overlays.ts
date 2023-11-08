@@ -12,21 +12,21 @@ function accessBroadbandData() : Promise<string[][]>{
   return fetch("https://api.census.gov/data/2021/acs/acs1/subject/variables?get=NAME,S2802_C03_022E&for=county:*&in=state:*")
   .then((r) => r.json())
 }
-
-async function getUnderservedCounties(){
-  let underservedCounties : string[] = []
-  const broadbandData = await accessBroadbandData();
-  broadbandData.forEach(county =>{
-    if (parseInt(county[1]) <= 85){
-      underservedCounties.push(county[0])
-    }
-  })
-}
+// async function getUnderservedCounties(){
+//   let underservedCounties : string[] = []
+//   const broadbandData = await accessBroadbandData();
+//   broadbandData.forEach(county =>{
+//     if (parseInt(county[1]) <= 85){
+//       underservedCounties.push(county[0])
+//     }
+//   })
+// }
 
 
 export function overlayData(): GeoJSON.FeatureCollection | undefined {
   return isFeatureCollection(rl_data) ? rl_data : undefined;
 }
+
 
 const propertyName = "holc_grade";
 export const geoLayer: FillLayer = {

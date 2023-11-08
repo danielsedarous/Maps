@@ -58,7 +58,7 @@ public MapsAreaKeyWordHandler(){
       for (String line: description.values())  {
         allData += line;
       }
-      System.out.println(allData);
+//      System.out.println(allData);
       if (!allData.contains(area))
       {iterator.remove();
         continue;

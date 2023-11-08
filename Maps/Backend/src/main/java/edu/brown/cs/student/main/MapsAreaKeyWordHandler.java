@@ -23,7 +23,7 @@ public MapsAreaKeyWordHandler(){
     try {
       String area = request.queryParams("Area");
       JsonReader reader = JsonReader.of(new Buffer().writeUtf8(Files.readString(Path.of(
-          "C:\\cs32\\maps-dsedarou-felia\\Maps\\Frontend\\src\\geodata\\fullDownload.json"))));
+          "/Users/francescaelia/Documents/CS32/maps-dsedarou-felia/Maps/Frontend/src/geodata/fullDownload.json"))));
       GeoJsonCollection geoFeature = JsonParsing.fromJsonGeneral(reader, GeoJsonCollection.class);
 
       if (area.isEmpty()) {
@@ -58,7 +58,6 @@ public MapsAreaKeyWordHandler(){
       for (String line: description.values())  {
         allData += line;
       }
-      System.out.println(allData);
       if (!allData.contains(area))
       {iterator.remove();
         continue;

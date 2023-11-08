@@ -22,15 +22,15 @@ public class MapsBoundingHandler implements Route {
     @Override
     public Object handle(Request request, Response response) throws Exception {
         try {
+
             double lowerLat = Double.parseDouble(request.queryParams("lowerLatitude"));
-            double upperLat = Double.parseDouble(request.queryParams(request.queryParams("upperLatitude")));
-            double lowerLong = Double.parseDouble(request.queryParams(request.queryParams("lowerLongitude")));
-            double upperLong = Double.parseDouble(request.queryParams(request.queryParams("upperLongitude")));
+            double upperLat = Double.parseDouble(request.queryParams("upperLatitude"));
+            double lowerLong = Double.parseDouble(request.queryParams("lowerLongitude"));
+            double upperLong = Double.parseDouble(request.queryParams("upperLongitude"));
 
             JsonReader reader = JsonReader.of(new Buffer().writeUtf8(Files.readString(Path.of(
-                    "C:\\cs32\\maps-dsedarou-felia\\Maps\\Frontend\\src\\geodata\\fullDownload.json"))));
+                    "/Users/francescaelia/Documents/CS32/maps-dsedarou-felia/Maps/Frontend/src/geodata/fullDownload.json"))));
             GeoJsonCollection geoFeature = JsonParsing.fromJsonGeneral(reader, GeoJsonCollection.class);
-
             geoFeature.features = filterFeatureByCoordinates(geoFeature, lowerLat, upperLat, lowerLong, upperLong);
             return JsonParsing.toJsonGeneral(geoFeature);
         } catch(Exception e) {
@@ -45,15 +45,20 @@ public class MapsBoundingHandler implements Route {
         while (iterator.hasNext()) {
             GeoJsonCollection.Feature feature = iterator.next();
             GeoJsonCollection.Geometry geometry = feature.geometry;
-            List<List<List<List<Double>>>> coordinatesList = geometry.coordinates;
-            List<List<Double>> coordinates = coordinatesList.get(0).get(0);
+            if (geometry != null){
+                List<List<List<List<Double>>>> coordinatesList = geometry.coordinates;
+                List<List<Double>> coordinates = coordinatesList.get(0).get(0);
 
-            for (List<Double> coordinatePair : coordinates) {
-                if (!(coordinatePair.get(0) >= lowerLong && coordinatePair.get(0) <= upperLong
-                        && coordinatePair.get(1) >= lowerLat && coordinatePair.get(1) <= upperLat)) {
-                    iterator.remove();
-                    break;
+                for (List<Double> coordinatePair : coordinates) {
+                    if (!(coordinatePair.get(0) >= lowerLong && coordinatePair.get(0) <= upperLong
+                            && coordinatePair.get(1) >= lowerLat && coordinatePair.get(1) <= upperLat)) {
+                        iterator.remove();
+                        break;
+                    }
                 }
+            }
+            else{
+                iterator.remove();
             }
         }
         return filteredFeatures;

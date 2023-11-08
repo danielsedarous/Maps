@@ -15,11 +15,41 @@ export function REPLInput(props: REPLInputProps) {
   async function handleSubmit(commandString: string) {
     var result : string[][];
     var splitString = splitIntoWords(commandString);
-    if (splitString.length == 2) {
-      var broadbandResult = await broadband(splitString);
-      result = [["Broadband percentage for " + broadbandResult[1][0] + ": " + broadbandResult[1][1]]]
-    } else {
-      result = [["Please input a valid state and county in the following format: <state> <county>"]];
+    if (splitString[0] == "broadband"){
+          if (splitString.length == 3) {
+            var broadbandResult = await broadband(splitString);
+            result = [
+              [
+                "Broadband percentage for " +
+                  broadbandResult[1][0] +
+                  ": " +
+                  broadbandResult[1][1],
+              ],
+            ];
+          } else {
+            result = [
+              [
+                "Please input a valid state and county in the following format: broadband <state> <county>",
+              ],
+            ];
+          }
+    }
+    else if (splitString[0] == "highlight"){
+      if (splitString.length == 2){
+        var highlightResult = await highlight(splitString)
+        result = [["area successfully highlighted"]];
+        //insert actual logic here
+      }
+      else{
+        result = [
+          [
+            "Please input a valid keyword search in the following format: highlight <keyword>",
+          ],
+        ];
+      }
+    }
+    else{
+      result = [["Please enter a valid command (broadband <state> <county> or highlight <keyword>)"]]
     }
     var resultTable = CSVToTable(result);
     props.setHistory([resultTable]);
@@ -103,7 +133,7 @@ export function REPLInput(props: REPLInputProps) {
 
   async function broadband(args: string[]) : Promise<string[][]> {
     return fetch(
-      "http://localhost:1234/broadband?state=" + args[0] + "&county=" + args[1]
+      "http://localhost:1234/broadband?state=" + args[1] + "&county=" + args[2]
     )
       .then((r) => r.json())
       .then((response) => {
@@ -118,4 +148,25 @@ export function REPLInput(props: REPLInputProps) {
         } 
       );
   }
+
+  async function highlight(args: string[]): Promise<string[][]> {
+    return fetch(
+      "http://localhost:1234/mapsKeyWord?Area=" + args[1]
+    )
+      .then((r) => r.json())
+      .then((response) => {
+        var answer;
+        if (response.type == "success") {
+          answer = response.data;
+        } else {
+          answer = [
+            [
+              "Maps keyword error",
+            ],
+          ];
+        }
+        return answer;
+      });
+  }
+
 }

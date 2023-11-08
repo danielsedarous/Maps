@@ -28,6 +28,7 @@ function MapBox() {
   );
 
   useEffect(() => {
+    // fetch bounding box data here
     setOverlay(overlayData());
   }, []);
   return (

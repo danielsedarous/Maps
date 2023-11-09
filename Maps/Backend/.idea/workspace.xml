@@ -6,6 +6,11 @@
   <component name="ChangeListManager">
     <list default="true" id="4d3e651b-13ab-4f20-98b5-14fd26cd335f" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/edu/brown/cs/student/main/MapsAreaKeyWordHandler.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/edu/brown/cs/student/main/MapsAreaKeyWordHandler.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/edu/brown/cs/student/main/MapsBoundingHandler.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/edu/brown/cs/student/main/MapsBoundingHandler.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/edu/brown/cs/student/main/server/Server.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/edu/brown/cs/student/main/server/Server.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/edu/brown/cs/student/main/MapsBoundingHandler.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/edu/brown/cs/student/main/MapsBoundingHandler.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Frontend/src/REPLInput.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/../Frontend/src/REPLInput.tsx" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -70,13 +75,26 @@
       <recent name="$PROJECT_DIR$/data/stars" />
     </key>
   </component>
-  <component name="RunManager" selected="Application.Main">
+  <component name="RunManager" selected="Application.Server">
     <configuration name="Main" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
       <option name="MAIN_CLASS_NAME" value="edu.brown.cs.student.main.Main" />
       <module name="moshi" />
       <extension name="coverage">
         <pattern>
           <option name="PATTERN" value="edu.brown.cs.student.main.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="Server" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
+      <option name="MAIN_CLASS_NAME" value="edu.brown.cs.student.main.server.Server" />
+      <module name="moshi" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="edu.brown.cs.student.main.server.*" />
           <option name="ENABLED" value="true" />
         </pattern>
       </extension>
@@ -130,29 +148,13 @@
         <option name="Make" enabled="true" />
       </method>
     </configuration>
-    <configuration name="Testing.testSearchCsvNoHeadersAndSearchHandler" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
-      <module name="server-annie-ye4-ShadiSoufan44" />
-      <extension name="coverage">
-        <pattern>
-          <option name="PATTERN" value="edu.brown.cs.student.*" />
-          <option name="ENABLED" value="true" />
-        </pattern>
-      </extension>
-      <option name="PACKAGE_NAME" value="edu.brown.cs.student" />
-      <option name="MAIN_CLASS_NAME" value="edu.brown.cs.student.Testing" />
-      <option name="METHOD_NAME" value="testSearchCsvNoHeadersAndSearchHandler" />
-      <option name="TEST_OBJECT" value="method" />
-      <method v="2">
-        <option name="Make" enabled="true" />
-      </method>
-    </configuration>
     <recent_temporary>
       <list>
+        <item itemvalue="Application.Server" />
         <item itemvalue="Application.Main" />
         <item itemvalue="JUnit.Testing (1)" />
         <item itemvalue="JUnit.Testing" />
         <item itemvalue="JUnit.Testing.testBroadBandAndBroadHandler" />
-        <item itemvalue="JUnit.Testing.testSearchCsvNoHeadersAndSearchHandler" />
       </list>
     </recent_temporary>
   </component>

@@ -1,60 +1,80 @@
 import "./main.css";
-import { Dispatch, ReactElement, SetStateAction, useState } from "react";
+import {
+  Dispatch,
+  ReactElement,
+  SetStateAction,
+  useState,
+  useEffect,
+} from "react";
 import { ControlledInput } from "./ControlledInput";
-
 
 export interface REPLInputProps {
   history: ReactElement[];
   setHistory: Dispatch<SetStateAction<ReactElement[]>>;
+  highlightAreaResult: string[][];
+  setHighlightAreaResult: Dispatch<SetStateAction<string[][]>>;
 }
-
 
 export function REPLInput(props: REPLInputProps) {
   const [commandString, setCommandString] = useState<string>("");
 
   async function handleSubmit(commandString: string) {
-    var result : string[][];
     var splitString = splitIntoWords(commandString);
-    if (splitString[0] == "broadband"){
-          if (splitString.length == 3) {
-            var broadbandResult = await broadband(splitString);
-            result = [
-              [
-                "Broadband percentage for " +
-                  broadbandResult[1][0] +
-                  ": " +
-                  broadbandResult[1][1],
-              ],
-            ];
-          } else {
-            result = [
-              [
-                "Please input a valid state and county in the following format: broadband <state> <county>",
-              ],
-            ];
-          }
-    }
-    else if (splitString[0] == "highlight"){
-      if (splitString.length == 2){
-        var highlightResult = await highlight(splitString)
-        result = [["area successfully highlighted"]];
-        //insert actual logic here
+    if (splitString[0] == "broadband") {
+      if (splitString.length == 3) {
+        var broadbandResult = await broadband(splitString);
+        await props.setHighlightAreaResult([
+          [
+            "Broadband percentage for " +
+              broadbandResult[1][0] +
+              ": " +
+              broadbandResult[1][1],
+          ],
+        ]);
+      } else {
+        await props.setHighlightAreaResult([
+          [
+            "Please input a valid state and county in the following format: broadband <state> <county>",
+          ],
+        ]);
       }
-      else{
-        result = [
+    } else if (splitString[0] == "highlight") {
+      if (splitString.length == 2) {
+        var highlightResult = await highlight(splitString);
+        // console.log (highlightResult);
+        await props.setHighlightAreaResult([
+          [
+            "Here are the features for the highlighted areas: " +
+              highlightResult,
+          ],
+        ]);
+        //insert actual logic here
+      } else {
+        await props.setHighlightAreaResult([
           [
             "Please input a valid keyword search in the following format: highlight <keyword>",
           ],
-        ];
+        ]);
       }
+    } else {
+      await props.setHighlightAreaResult([
+        [
+          "Please enter a valid command (broadband <state> <county> or highlight <keyword>)",
+        ],
+      ]);
     }
-    else{
-      result = [["Please enter a valid command (broadband <state> <county> or highlight <keyword>)"]]
-    }
-    var resultTable = CSVToTable(result);
-    props.setHistory([resultTable]);
-    setCommandString("");
   }
+
+  useEffect(() => {
+    // This block will be executed whenever props.highlightAreaResult changes
+    console.log("highlight result: " + props.highlightAreaResult);
+
+    let finalResult = props.highlightAreaResult;
+    var resultTable = CSVToTable(finalResult);
+    props.setHistory([resultTable]);
+
+    setCommandString("");
+  }, [props.highlightAreaResult]);
 
   return (
     <div className="repl-input">
@@ -131,27 +151,9 @@ export function REPLInput(props: REPLInputProps) {
     }
   }
 
-  async function broadband(args: string[]) : Promise<string[][]> {
+  async function broadband(args: string[]): Promise<string[][]> {
     return fetch(
       "http://localhost:1234/broadband?state=" + args[1] + "&county=" + args[2]
-    )
-      .then((r) => r.json())
-      .then((response) => {
-          var answer;
-          if (response.type == "success") {
-            answer = response.data;
-          } else {
-            answer =
-              [["Broadband error - check server API connection or ensure provided state and county are valid"]];
-          }
-          return answer;
-        } 
-      );
-  }
-
-  async function highlight(args: string[]): Promise<string[][]> {
-    return fetch(
-      "http://localhost:1234/mapsKeyWord?Area=" + args[1]
     )
       .then((r) => r.json())
       .then((response) => {
@@ -161,7 +163,7 @@ export function REPLInput(props: REPLInputProps) {
         } else {
           answer = [
             [
-              "Maps keyword error",
+              "Broadband error - check server API connection or ensure provided state and county are valid",
             ],
           ];
         }
@@ -169,4 +171,19 @@ export function REPLInput(props: REPLInputProps) {
       });
   }
 
+  async function highlight(args: string[]): Promise<string[][]> {
+    return fetch("http://localhost:1234/mapsKeyWord?Area=" + args[1])
+      .then((r) => r.json())
+      .then((response) => {
+        var answer;
+        console.log("response type" + response.type);
+        if (response.type === "success") {
+          answer = response.data;
+          console.log("success");
+        } else {
+          answer = [["Maps keyword error"]];
+        }
+        return answer;
+      });
+  }
 }

@@ -1,11 +1,16 @@
 package edu.brown.cs.student.main;
 
+import com.squareup.moshi.JsonAdapter;
 import com.squareup.moshi.JsonReader;
+import com.squareup.moshi.Moshi;
+import com.squareup.moshi.Types;
 import edu.brown.cs.student.main.GeoJsonCollection.Feature;
 import edu.brown.cs.student.main.GeoJsonCollection.Properties;
+import java.lang.reflect.Type;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
@@ -22,15 +27,23 @@ public MapsAreaKeyWordHandler(){
   public Object handle(Request request, Response response) throws Exception {
     try {
       String area = request.queryParams("Area");
+      Moshi moshi = new Moshi.Builder().build();
+      Type mapStringObject = Types.newParameterizedType(Map.class, String.class, Object.class);
+      JsonAdapter<Map<String, Object>> adapter = moshi.adapter(mapStringObject);
       JsonReader reader = JsonReader.of(new Buffer().writeUtf8(Files.readString(Path.of(
-          "/Users/francescaelia/Documents/CS32/maps-dsedarou-felia/Maps/Frontend/src/geodata/fullDownload.json"))));
+          "C:\\cs32\\maps-dsedarou-felia\\Maps\\Frontend\\src\\geodata\\fullDownload.json"))));
       GeoJsonCollection geoFeature = JsonParsing.fromJsonGeneral(reader, GeoJsonCollection.class);
+
 
       if (area.isEmpty()) {
         return JsonParsing.toJsonGeneral(geoFeature);
       }
+      Map<String, Object> responseMap = new HashMap<>();
+
+      responseMap.put("type", "success");
       geoFeature.features = filterFeatureByArea(geoFeature, area);
-      return JsonParsing.toJsonGeneral(geoFeature);
+      responseMap.put("data", JsonParsing.toJsonGeneral(geoFeature));
+      return adapter.toJson(responseMap);
     } catch(Exception e) {
       return e;
     }

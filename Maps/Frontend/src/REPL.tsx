@@ -25,11 +25,7 @@ export default function REPL() {
         setHistory={setHistory}
         highlightAreaResult={highlightResult}
         setHighlightAreaResult={setHighlightResult}
-      />
-      {/* <MapBox
-        highlightAreaResult={highlightResult}
-        setHighlightAreaResult={setHighlightResult}
-      /> */}
+      />    
     </div>
   );
 }

@@ -6,14 +6,17 @@ import com.squareup.moshi.Moshi;
 import com.squareup.moshi.Types;
 import edu.brown.cs.student.main.GeoJsonCollection.Feature;
 import edu.brown.cs.student.main.GeoJsonCollection.Properties;
+import java.io.FileInputStream;
 import java.lang.reflect.Type;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import okio.Buffer;
 import spark.Request;
 import spark.Response;
@@ -43,12 +46,14 @@ public MapsAreaKeyWordHandler(){
       responseMap.put("type", "success");
       geoFeature.features = filterFeatureByArea(geoFeature, area);
       responseMap.put("data", JsonParsing.toJsonGeneral(geoFeature));
+//      responseMap.put()
       return adapter.toJson(responseMap);
     } catch(Exception e) {
       return e;
     }
 
   }
+
 
 
   public static List<Feature> filterFeatureByArea(GeoJsonCollection geoJsonCollection, String area){

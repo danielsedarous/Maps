@@ -7,7 +7,7 @@ import {
   useEffect,
 } from "react";
 import { ControlledInput } from "./ControlledInput";
-
+export let parsedHighlight: GeoJSON.Feature[];
 export interface REPLInputProps {
   history: ReactElement[];
   setHistory: Dispatch<SetStateAction<ReactElement[]>>;
@@ -40,15 +40,14 @@ export function REPLInput(props: REPLInputProps) {
       }
     } else if (splitString[0] == "highlight") {
       if (splitString.length == 2) {
-        var highlightResult = await highlight(splitString);
-        // console.log (highlightResult);
+        parsedHighlight = ((await highlight(splitString)).features);
+        console.log("parsedL: " + parsedHighlight.length)
+        // const result: GeoJSON.FeatureCollection = {"type":"FeatureCollection","features":[]}
+        // highlightResult = await highlight(splitString);
+        console.log ("parsed highlight: "+ parsedHighlight);
         await props.setHighlightAreaResult([
-          [
-            "Here are the features for the highlighted areas: " +
-              highlightResult,
-          ],
+          ["Search successful! Look on your map for the highlighted areas!"],
         ]);
-        //insert actual logic here
       } else {
         await props.setHighlightAreaResult([
           [
@@ -171,19 +170,26 @@ export function REPLInput(props: REPLInputProps) {
       });
   }
 
-  async function highlight(args: string[]): Promise<string[][]> {
+  async function highlight(
+    args: string[]
+  ): Promise<GeoJSON.FeatureCollection > {
     return fetch("http://localhost:1234/mapsKeyWord?Area=" + args[1])
       .then((r) => r.json())
       .then((response) => {
+        let parseAnswer: GeoJSON.FeatureCollection;
         var answer;
-        console.log("response type" + response.type);
-        if (response.type === "success") {
+        // if (response.data.length > 66) {
           answer = response.data;
-          console.log("success");
-        } else {
-          answer = [["Maps keyword error"]];
-        }
-        return answer;
+          parseAnswer = JSON.parse(answer);
+          // console.log("success");
+          console.log("length" + response.data.length)
+          console.log(parseAnswer);
+        // }
+        // } else {
+        //   parseAnswer = null;
+        // }
+        console.log("parsedAnswer: " + parseAnswer);
+        return parseAnswer;
       });
   }
 }

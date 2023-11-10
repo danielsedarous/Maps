@@ -1,5 +1,5 @@
 import Map, { Layer, MapLayerMouseEvent, Source } from "react-map-gl";
-import { geoLayer, overlayData } from "./overlays";
+import { geoLayer, highlightLayer, overlayData } from "./overlays";
 import React, {
   Dispatch,
   SetStateAction,
@@ -7,11 +7,14 @@ import React, {
   useEffect,
 } from "react";
 import { Access_Token } from "./private/api.js";
+// import { highlightData } from "./overlays";
+import { parsedHighlight } from "./REPLInput";
 
-export interface MapBoxProps {
-  highlightAreaResult: string[][];
-  setHighlightAreaResult: Dispatch<SetStateAction<string[][]>>;
-}
+
+// export interface MapBoxProps {
+//   highlightAreaResult: string[][];
+//   setHighlightAreaResult: Dispatch<SetStateAction<string[][]>>;
+// }
 interface LatLong {
   lat: number;
   long: number;
@@ -41,10 +44,16 @@ function MapBox() {
     setOverlay(overlayData());
   }, []);
 
-    // const highlightData: GeoJSON.FeatureCollection = {
-    //   type: "FeatureCollection",
-    //   features: props.highlightAreaResult,
-    // };
+  // const highlightData: GeoJSON.FeatureCollection = {
+  //   type: "FeatureCollection",
+  //   features: props.highlightAreaResult,
+  // };
+
+   const highlightData: GeoJSON.FeatureCollection = {
+        type: "FeatureCollection",
+        features: parsedHighlight,
+      };
+
   return (
     <Map
       mapboxAccessToken={Access_Token}
@@ -57,13 +66,9 @@ function MapBox() {
       <Source id="geo_data" type="geojson" data={overlay}>
         <Layer {...geoLayer} />
       </Source>
-      {/* <Source id="highlight" type="geojson" data={highlightData}>
-        <Layer
-          id={highlightLayer.id}
-          type={highlightLayer.type}
-          paint={highlightLayer.paint}
-        />
-      </Source> */}
+      <Source id="highlight" type="geojson" data={highlightData}>
+        <Layer {...highlightLayer} />
+      </Source>
     </Map>
   );
 }

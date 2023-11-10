@@ -3,7 +3,7 @@ import { FillLayer } from "react-map-gl";
 
 import rl_data from "./geodata/fullDownload.json";
 import broadband_data from "./geodata/Broadband.json"
-import { parsedHighlight } from "./REPLInput";
+// import { parsedHighlight } from "./REPLInput";
 function isFeatureCollection(json: any): json is FeatureCollection {
   return json.type === "FeatureCollection";
 }
@@ -36,31 +36,11 @@ export const highlightLayer: FillLayer = {
   id: "highlight_data",
   type: "fill",
   paint: {
-    "fill-color": ["rgba", 255, 255, 0, .2], // Yellow color with full opacity
+    "fill-color": "#000000",
+    "fill-opacity": 0.2,
+
   },
 };
-
-// const propeName = "holc_grade";
-// export const highlightLayer: FillLayer = {
-//   id: "geo_data",
-//   type: "fill",
-//   paint: {
-//     "fill-color": [
-//       "match",
-//       ["get", propeName],
-//       "A",
-//       "#FFFF00",
-//       "B",
-//       "#808000",
-//       "C",
-//       "#FFC0CB",
-//       "D",
-//       "#8B0000",
-//       "#ccc",
-//     ],
-//     "fill-opacity": 0.2,
-//   },
-// };
 
 
 const propertyName = "holc_grade";

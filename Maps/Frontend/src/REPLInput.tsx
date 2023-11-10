@@ -7,23 +7,29 @@ import {
   useEffect,
 } from "react";
 import { ControlledInput } from "./ControlledInput";
-export let parsedHighlight: GeoJSON.Feature[];
 export interface REPLInputProps {
   history: ReactElement[];
   setHistory: Dispatch<SetStateAction<ReactElement[]>>;
-  highlightAreaResult: string[][];
-  setHighlightAreaResult: Dispatch<SetStateAction<string[][]>>;
+  Result: string[][];
+  setResult: Dispatch<SetStateAction<string[][]>>;
+  highlightResult: GeoJSON.Feature[];
+  setHighlightResult: Dispatch<
+    SetStateAction<
+      GeoJSON.Feature<GeoJSON.Geometry, GeoJSON.GeoJsonProperties>[]
+    >
+  >;
 }
 
 export function REPLInput(props: REPLInputProps) {
   const [commandString, setCommandString] = useState<string>("");
+  var splitString: string[];
 
   async function handleSubmit(commandString: string) {
-    var splitString = splitIntoWords(commandString);
+    splitString = splitIntoWords(commandString);
     if (splitString[0] == "broadband") {
-      if (splitString.length == 3) {
-        var broadbandResult = await broadband(splitString);
-        await props.setHighlightAreaResult([
+      var broadbandResult = await broadband(splitString);
+      if (splitString.length == 3 && broadbandResult.length > 1) {
+        await props.setResult([
           [
             "Broadband percentage for " +
               broadbandResult[1][0] +
@@ -32,48 +38,41 @@ export function REPLInput(props: REPLInputProps) {
           ],
         ]);
       } else {
-        await props.setHighlightAreaResult([
-          [
-            "Please input a valid state and county in the following format: broadband <state> <county>",
-          ],
-        ]);
+        await props.setResult(broadbandResult);
       }
     } else if (splitString[0] == "highlight") {
-      if (splitString.length == 2) {
-        parsedHighlight = ((await highlight(splitString)).features);
-        console.log("parsedL: " + parsedHighlight.length)
-        // const result: GeoJSON.FeatureCollection = {"type":"FeatureCollection","features":[]}
-        // highlightResult = await highlight(splitString);
-        console.log ("parsed highlight: "+ parsedHighlight);
-        await props.setHighlightAreaResult([
+      const highlightLength: number = (await highlight(splitString)).features
+        .length;
+      props.setHighlightResult((await highlight(splitString)).features);
+      console.log("highlight length:" + highlightLength);
+      if (splitString.length == 2 && highlightLength > 0) {
+        // props.setHighlightResult(((await highlight(splitString)).features));
+        await props.setResult([
           ["Search successful! Look on your map for the highlighted areas!"],
         ]);
       } else {
-        await props.setHighlightAreaResult([
+        await props.setResult([
           [
-            "Please input a valid keyword search in the following format: highlight <keyword>",
+            "No results for your area description, please try another one and make sure your format is: highlight <area description>",
           ],
         ]);
       }
     } else {
-      await props.setHighlightAreaResult([
+      await props.setResult([
         [
-          "Please enter a valid command (broadband <state> <county> or highlight <keyword>)",
+          "Please enter a valid command (broadband <state> <county> or highlight <area description>)",
         ],
       ]);
     }
   }
 
   useEffect(() => {
-    // This block will be executed whenever props.highlightAreaResult changes
-    console.log("highlight result: " + props.highlightAreaResult);
-
-    let finalResult = props.highlightAreaResult;
+    let finalResult = props.Result;
     var resultTable = CSVToTable(finalResult);
     props.setHistory([resultTable]);
 
     setCommandString("");
-  }, [props.highlightAreaResult]);
+  }, [props.Result]);
 
   return (
     <div className="repl-input">
@@ -157,38 +156,31 @@ export function REPLInput(props: REPLInputProps) {
       .then((r) => r.json())
       .then((response) => {
         var answer;
+        console.log("response type" + response.type);
         if (response.type == "success") {
           answer = response.data;
+          console.log("response length: " + response.data.length);
         } else {
           answer = [
             [
               "Broadband error - check server API connection or ensure provided state and county are valid",
             ],
           ];
+          console.log("failure: " + answer.length);
         }
         return answer;
       });
   }
 
-  async function highlight(
-    args: string[]
-  ): Promise<GeoJSON.FeatureCollection > {
+  async function highlight(args: string[]): Promise<GeoJSON.FeatureCollection> {
     return fetch("http://localhost:1234/mapsKeyWord?Area=" + args[1])
       .then((r) => r.json())
       .then((response) => {
         let parseAnswer: GeoJSON.FeatureCollection;
         var answer;
-        // if (response.data.length > 66) {
-          answer = response.data;
-          parseAnswer = JSON.parse(answer);
-          // console.log("success");
-          console.log("length" + response.data.length)
-          console.log(parseAnswer);
-        // }
-        // } else {
-        //   parseAnswer = null;
-        // }
-        console.log("parsedAnswer: " + parseAnswer);
+        answer = response.data;
+        parseAnswer = JSON.parse(answer);
+        console.log(parseAnswer);
         return parseAnswer;
       });
   }

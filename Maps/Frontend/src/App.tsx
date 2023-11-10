@@ -9,9 +9,6 @@ function App() {
       <div className="repl-container">
         <REPL />
       </div>
-      <div className="map-container">
-        <MapBox />
-      </div>
     </div>
   );
 }

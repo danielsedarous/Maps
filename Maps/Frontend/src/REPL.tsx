@@ -11,7 +11,8 @@ for the REPLInput and REPLHistory components.
 
 export default function REPL() {
   const [history, setHistory] = useState<ReactElement[]>([]);
-  const [highlightResult, setHighlightResult] = useState<string[][]>([[]]);
+  const [Result, setResult] = useState<string[][]>([[]]);
+  const [highlightResult, setHighlightResult] = useState<GeoJSON.Feature[]>([]);
 
   return (
     <div
@@ -23,9 +24,17 @@ export default function REPL() {
       <REPLInput
         history={history}
         setHistory={setHistory}
-        highlightAreaResult={highlightResult}
-        setHighlightAreaResult={setHighlightResult}
-      />    
+        Result={Result}
+        setResult={setResult}
+        highlightResult={highlightResult}
+        setHighlightResult={setHighlightResult}
+      />
+      <div className="map-container">
+        <MapBox
+          highlightResult={highlightResult}
+          setHighlightResult={setHighlightResult}
+        />
+      </div>
     </div>
   );
 }

@@ -53,7 +53,7 @@ public class Server {
     Spark.get("/view", new ViewHandler(sharedState));
     Spark.get("/search", new SearchHandler(sharedState));
     Spark.get("/broadband", new BroadbandHandler(new ACSSource()));
-    Spark.get("/mapsKeyWord", new MapsAreaKeyWordHandler());
+    Spark.get("mapsKeyWord", new MapsAreaKeyWordHandler());
     Spark.get("/mapsBoundingBox", new MapsBoundingHandler());
 
 

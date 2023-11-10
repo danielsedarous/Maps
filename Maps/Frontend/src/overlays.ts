@@ -3,7 +3,7 @@ import { FillLayer } from "react-map-gl";
 
 import rl_data from "./geodata/fullDownload.json";
 import broadband_data from "./geodata/Broadband.json"
-
+// import { parsedHighlight } from "./REPLInput";
 function isFeatureCollection(json: any): json is FeatureCollection {
   return json.type === "FeatureCollection";
 }
@@ -26,6 +26,21 @@ function accessBroadbandData() : Promise<string[][]>{
 export function overlayData(): GeoJSON.FeatureCollection | undefined {
   return isFeatureCollection(rl_data) ? rl_data : undefined;
 }
+
+//  export const highlightData: GeoJSON.FeatureCollection = {
+//       type: "FeatureCollection",
+//       features: parsedHighlight,
+//     };
+
+export const highlightLayer: FillLayer = {
+  id: "highlight_data",
+  type: "fill",
+  paint: {
+    "fill-color": "#000000",
+    "fill-opacity": 0.2,
+
+  },
+};
 
 
 const propertyName = "holc_grade";

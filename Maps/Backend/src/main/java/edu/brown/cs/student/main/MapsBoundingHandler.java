@@ -29,7 +29,7 @@ public class MapsBoundingHandler implements Route {
             double upperLong = Double.parseDouble(request.queryParams("upperLongitude"));
 
             JsonReader reader = JsonReader.of(new Buffer().writeUtf8(Files.readString(Path.of(
-                    "/Users/francescaelia/Documents/CS32/maps-dsedarou-felia/Maps/Frontend/src/geodata/fullDownload.json"))));
+                    "C:\\cs32\\maps-dsedarou-felia\\Maps\\Frontend\\src\\geodata\\fullDownload.json"))));
             GeoJsonCollection geoFeature = JsonParsing.fromJsonGeneral(reader, GeoJsonCollection.class);
             geoFeature.features = filterFeatureByCoordinates(geoFeature, lowerLat, upperLat, lowerLong, upperLong);
             return JsonParsing.toJsonGeneral(geoFeature);

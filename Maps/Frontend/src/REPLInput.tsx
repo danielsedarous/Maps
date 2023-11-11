@@ -45,6 +45,8 @@ export function REPLInput(props: REPLInputProps) {
         .length;
       props.setHighlightResult((await highlight(splitString)).features);
       console.log("highlight length:" + highlightLength);
+      console.log("highlight result:" + props.highlightResult);
+
       if (splitString.length == 2 && highlightLength > 0) {
         // props.setHighlightResult(((await highlight(splitString)).features));
         await props.setResult([

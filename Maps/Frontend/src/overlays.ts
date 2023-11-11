@@ -1,17 +1,30 @@
 import { FeatureCollection } from "geojson";
 import { FillLayer } from "react-map-gl";
 
-import rl_data from "./geodata/fullDownload.json";
 import broadband_data from "./geodata/Broadband.json"
 // import { parsedHighlight } from "./REPLInput";
 function isFeatureCollection(json: any): json is FeatureCollection {
   return json.type === "FeatureCollection";
 }
 
-function accessBroadbandData() : Promise<string[][]>{
-  return fetch("https://api.census.gov/data/2021/acs/acs1/subject/variables?get=NAME,S2802_C03_022E&for=county:*&in=state:*")
-  .then((r) => r.json())
+
+function boundingBoxCall(): Promise<GeoJSON.Feature<GeoJSON.Geometry, GeoJSON.GeoJsonProperties>[]> {
+  return fetch(
+    "http://localhost:1234/mapsBoundingBox?lowerLatitude=-90&upperLatitude=90&lowerLongitude=-180&upperLongitude=180"
+  )
+    .then((r) => r.json())
+    .then((response) => {
+      var answer;
+      console.log("response type" + response.type);
+      if (response.type == "success") {
+        return response.data;
+    }});
 }
+
+// function accessBroadbandData() : Promise<string[][]>{
+//   return fetch("https://api.census.gov/data/2021/acs/acs1/subject/variables?get=NAME,S2802_C03_022E&for=county:*&in=state:*")
+//   .then((r) => r.json())
+// }
 // async function getUnderservedCounties(){
 //   let underservedCounties : string[] = []
 //   const broadbandData = await accessBroadbandData();
@@ -22,9 +35,15 @@ function accessBroadbandData() : Promise<string[][]>{
 //   })
 // }
 
+export const featureData: GeoJSON.FeatureCollection = {
+  type: "FeatureCollection",
+  features: await boundingBoxCall(),
+};
 
-export function overlayData(): GeoJSON.FeatureCollection | undefined {
-  return isFeatureCollection(rl_data) ? rl_data : undefined;
+ export function overlayData() {
+  console.log("feat: " + featureData.features)
+  console.log(isFeatureCollection(featureData) ? featureData : undefined)
+  return isFeatureCollection(featureData) ? featureData : undefined;
 }
 
 //  export const highlightData: GeoJSON.FeatureCollection = {

@@ -1,7 +1,7 @@
 import { FeatureCollection } from "geojson";
 import { FillLayer } from "react-map-gl";
 
-import broadband_data from "./geodata/Broadband.json"
+// import broadband_data from "./geodata/Broadband.json"
 // import { parsedHighlight } from "./REPLInput";
 function isFeatureCollection(json: any): json is FeatureCollection {
   return json.type === "FeatureCollection";

@@ -1,8 +1,6 @@
 import { FeatureCollection } from "geojson";
 import { FillLayer } from "react-map-gl";
 
-// import broadband_data from "./geodata/Broadband.json"
-// import { parsedHighlight } from "./REPLInput";
 function isFeatureCollection(json: any): json is FeatureCollection {
   return json.type === "FeatureCollection";
 }
@@ -21,20 +19,6 @@ function boundingBoxCall(): Promise<GeoJSON.Feature<GeoJSON.Geometry, GeoJSON.Ge
     }});
 }
 
-// function accessBroadbandData() : Promise<string[][]>{
-//   return fetch("https://api.census.gov/data/2021/acs/acs1/subject/variables?get=NAME,S2802_C03_022E&for=county:*&in=state:*")
-//   .then((r) => r.json())
-// }
-// async function getUnderservedCounties(){
-//   let underservedCounties : string[] = []
-//   const broadbandData = await accessBroadbandData();
-//   broadbandData.forEach(county =>{
-//     if (parseInt(county[1]) <= 85){
-//       underservedCounties.push(county[0])
-//     }
-//   })
-// }
-
 export const featureData: GeoJSON.FeatureCollection = {
   type: "FeatureCollection",
   features: await boundingBoxCall(),
@@ -45,11 +29,6 @@ export const featureData: GeoJSON.FeatureCollection = {
   console.log(isFeatureCollection(featureData) ? featureData : undefined)
   return isFeatureCollection(featureData) ? featureData : undefined;
 }
-
-//  export const highlightData: GeoJSON.FeatureCollection = {
-//       type: "FeatureCollection",
-//       features: parsedHighlight,
-//     };
 
 export const highlightLayer: FillLayer = {
   id: "highlight_data",

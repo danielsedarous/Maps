@@ -130,24 +130,12 @@ export function REPLInput(props: REPLInputProps) {
   /**
    * This function is responsible for checking for keyboard events executed by the user.
    * When the enter key is pressed, the handleSubmit function is called (as if the button was pressed).
-   * In addition, arrow keys can be used to scroll thourgh the REPLHistory as shortcuts
-   * for using the mouse or a trackpad.
    * @param event
    */
   function handleKeyDown(event: React.KeyboardEvent<HTMLInputElement>) {
     const historyWindow = document.getElementById("replHistoryId");
     if (event.key === "Enter") {
       handleSubmit(commandString);
-    }
-    if (event.key === "ArrowUp") {
-      if (historyWindow != null) {
-        historyWindow.scrollBy(0, -100);
-      }
-    }
-    if (event.key === "ArrowDown") {
-      if (historyWindow != null) {
-        historyWindow.scrollBy(0, 100);
-      }
     }
   }
 

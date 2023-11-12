@@ -1,32 +1,47 @@
-package edu.brown.cs.student.main;
+package edu.brown.cs.student.main.maps.handlers;
 
 import com.squareup.moshi.JsonAdapter;
 import com.squareup.moshi.JsonReader;
 import com.squareup.moshi.Moshi;
 import com.squareup.moshi.Types;
-import edu.brown.cs.student.main.GeoJsonCollection.Feature;
-import edu.brown.cs.student.main.GeoJsonCollection.Properties;
-import java.io.FileInputStream;
+import edu.brown.cs.student.main.maps.json.GeoJsonCollection;
+import edu.brown.cs.student.main.maps.json.GeoJsonCollection.Feature;
+import edu.brown.cs.student.main.maps.json.GeoJsonCollection.Properties;
 import java.lang.reflect.Type;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
+
+import edu.brown.cs.student.main.maps.json.JsonParsing;
 import okio.Buffer;
 import spark.Request;
 import spark.Response;
 import spark.Route;
 
+/**
+ * Handles search queries for GeoJSON data based on area keywords
+ */
 public class MapsAreaKeyWordHandler implements Route {
   public Map<String,Object> searchHistory;
-public MapsAreaKeyWordHandler(){
+
+  /**
+   * Default constructor initializing search history
+   */
+  public MapsAreaKeyWordHandler(){
   this.searchHistory = new HashMap<>();
 }
+
+  /**
+   * Handles the search request, error handles, and returns the result
+   * @param request request The incoming HTTP request
+   * @param response The HTTP response to be generated
+   * @return JSON response based on the search query
+   * @throws Exception thrown if handling encounters issues
+   */
   @Override
   public Object handle(Request request, Response response) throws Exception {
     try {
@@ -35,7 +50,7 @@ public MapsAreaKeyWordHandler(){
       Type mapStringObject = Types.newParameterizedType(Map.class, String.class, Object.class);
       JsonAdapter<Map<String, Object>> adapter = moshi.adapter(mapStringObject);
       JsonReader reader = JsonReader.of(new Buffer().writeUtf8(Files.readString(Path.of(
-          "C:\\cs32\\maps-dsedarou-felia\\Maps\\Backend\\src\\main\\java\\edu\\brown\\cs\\student\\main\\geodata\\fullDownload.json"))));
+          "/Users/francescaelia/Documents/CS32/maps-dsedarou-felia/Maps/Backend/src/main/java/edu/brown/cs/student/main/geodata/fullDownload.json"))));
       GeoJsonCollection geoFeature = JsonParsing.fromJsonGeneral(reader, GeoJsonCollection.class);
 
 
@@ -50,6 +65,9 @@ public MapsAreaKeyWordHandler(){
         Map<String, Object> responseMap = new HashMap<>();
         responseMap.put("type", "error_bad_request");
         responseMap.put("error_description", "There were no areas that matched this area description");
+        geoFeature.features = filterFeatureByArea(geoFeature, area);
+        this.searchHistory.put(area, geoFeature.features);
+        responseMap.put("data", JsonParsing.toJsonGeneral(geoFeature));
         return adapter.toJson(responseMap);
       }
       Map<String, Object> responseMap = new HashMap<>();
@@ -70,12 +88,13 @@ public MapsAreaKeyWordHandler(){
     }
   }
 
-  public Map<String,Object> getSearchHistory(){
-  return this.searchHistory;
-  }
-
-
-  public static List<Feature> filterFeatureByArea(GeoJsonCollection geoJsonCollection, String area){
+  /**
+   * Helper method that filters GeoJSON features based on the specified area keyword
+   * @param geoJsonCollection the GeoJSON collection to filter
+   * @param area the area keyword to filter by
+   * @return list of filtered GeoJSON features
+   */
+  private static List<Feature> filterFeatureByArea(GeoJsonCollection geoJsonCollection, String area){
     List<Feature> filteredFeatures = new ArrayList<>(geoJsonCollection.features);
     Iterator<Feature> iterator = filteredFeatures.iterator();
     while (iterator.hasNext()) {

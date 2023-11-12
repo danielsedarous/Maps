@@ -1,34 +1,40 @@
-package edu.brown.cs.student.main;
+package edu.brown.cs.student.main.maps.handlers;
 
 import com.squareup.moshi.JsonAdapter;
 import com.squareup.moshi.JsonReader;
 import com.squareup.moshi.Moshi;
 import com.squareup.moshi.Types;
-import edu.brown.cs.student.main.GeoJsonCollection;
-import edu.brown.cs.student.main.JsonParsing;
+import edu.brown.cs.student.main.maps.json.GeoJsonCollection;
+import edu.brown.cs.student.main.maps.json.JsonParsing;
 import okio.Buffer;
 import spark.Request;
 import spark.Response;
 import spark.Route;
-
 import java.lang.reflect.Type;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.*;
 
+/**
+ * Handles search queries for GeoJSON data based on bounding coordinates.
+ */
 public class MapsBoundingHandler implements Route {
+    /**
+     * Default constructor for MapsBoundingHandler class
+     */
     public MapsBoundingHandler(){
-
     }
 
+    /**
+     * Handles the bounding box search request, error handlers, and returns the result
+     * @param request the incoming HTTP request
+     * @param response the HTTP response to be generated
+     * @return JSON response based on the bounding box search query
+     * @throws Exception thrown if handling encounters issues
+     */
     @Override
     public Object handle(Request request, Response response) throws Exception {
         try {
-//            double lowerLat = Double.parseDouble(request.queryParams("lowerLatitude"));
-//            double upperLat = Double.parseDouble(request.queryParams("upperLatitude"));
-//            double lowerLong = Double.parseDouble(request.queryParams("lowerLongitude"));
-//            double upperLong = Double.parseDouble(request.queryParams("upperLongitude"));
-
             Moshi moshi = new Moshi.Builder().build();
             Type mapStringObject = Types.newParameterizedType(Map.class, String.class, Object.class);
             JsonAdapter<Map<String, Object>> adapter = moshi.adapter(mapStringObject);
@@ -86,7 +92,16 @@ public class MapsBoundingHandler implements Route {
 
     }
 
-    public static List<GeoJsonCollection.Feature> filterFeatureByCoordinates(GeoJsonCollection geoJsonCollection, double lowerLat, double upperLat, double lowerLong, double upperLong){
+    /**
+     * Helper method that filters GeoJSON features based on bounding coordinates
+     * @param geoJsonCollection The GeoJSON collection to filter
+     * @param lowerLat lower latitude bound
+     * @param upperLat upper latitude bound
+     * @param lowerLong lower longitude bound
+     * @param upperLong upper longitude bound
+     * @return list of filtered GeoJSON features
+     */
+    private static List<GeoJsonCollection.Feature> filterFeatureByCoordinates(GeoJsonCollection geoJsonCollection, double lowerLat, double upperLat, double lowerLong, double upperLong){
         List<GeoJsonCollection.Feature> filteredFeatures = new ArrayList<>(geoJsonCollection.features);
         Iterator<GeoJsonCollection.Feature> iterator = filteredFeatures.iterator();
         while (iterator.hasNext()) {

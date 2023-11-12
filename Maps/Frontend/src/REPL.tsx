@@ -29,7 +29,9 @@ export default function REPL() {
         highlightResult={highlightResult}
         setHighlightResult={setHighlightResult}
       />
-      <div className="map-container">
+      <div className="map-container" 
+      aria-label="map"
+      >
         <MapBox
           highlightResult={highlightResult}
           setHighlightResult={setHighlightResult}

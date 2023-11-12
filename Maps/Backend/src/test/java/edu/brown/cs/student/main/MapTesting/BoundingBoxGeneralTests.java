@@ -1,14 +1,10 @@
 package edu.brown.cs.student.main.MapTesting;
 
-
-
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertTrue;
-
 import com.squareup.moshi.JsonAdapter;
 import com.squareup.moshi.Moshi;
 import com.squareup.moshi.Types;
-import edu.brown.cs.student.main.MapsBoundingHandler;
+import edu.brown.cs.student.main.maps.handlers.MapsBoundingHandler;
 import java.io.IOException;
 import java.lang.reflect.Type;
 import java.net.HttpURLConnection;
@@ -29,12 +25,13 @@ import spark.Spark;
  * tested which handles several working cases.
  */
 public class BoundingBoxGeneralTests {
-
-
   private final Type mapStringObject =
       Types.newParameterizedType(Map.class, String.class, Object.class);
   private JsonAdapter<Map<String, Object>> adapter;
 
+  /**
+   * We want this to run before all our tests, so we can establish a port.
+   */
   @BeforeAll
   public static void setup_before_everything() {
     // arbitrary available port.
@@ -57,6 +54,9 @@ public class BoundingBoxGeneralTests {
     adapter = moshi.adapter(mapStringObject);
   }
 
+  /**
+   * After the test is completed we want to disconnect Spark from the endpoints
+   */
   @AfterEach
   public void teardown() {
     // Gracefully stop Spark listening on both endpoints
@@ -64,6 +64,12 @@ public class BoundingBoxGeneralTests {
     Spark.awaitStop(); // don't proceed until the server is stopped
   }
 
+  /**
+   * Use this to build the URL connection without sending the request in
+   * @param apiCall- The queries we would like to input for our search
+   * @return the connection after searching
+   * @throws IOException - Error with any connectivity
+   */
   private static HttpURLConnection tryRequest(String apiCall) throws IOException {
     // Configure the connection (but don't actually send the request yet)
     URL requestURL = new URL("http://localhost:" + Spark.port() + "/" + apiCall);
@@ -141,6 +147,10 @@ public class BoundingBoxGeneralTests {
     assertEquals("success", body.get("type"));
   }
 
+  /**
+   * This method tests that a invalid (non-double) value inputted for the upper latitude returns a descriptive error
+   * @throws IOException
+   */
   @Test
   public void testInvalidLatMax() throws IOException {
     HttpURLConnection loadConnection = tryRequest(
@@ -152,6 +162,10 @@ public class BoundingBoxGeneralTests {
     assertEquals("min and max latitude and longitude must be valid double values", body.get("error_description"));
   }
 
+  /**
+   * This method tests that a invalid (non-double) value inputted for the upper longitude returns a descriptive error
+   * @throws IOException
+   */
   @Test
   public void testInvalidLongMax() throws IOException {
     HttpURLConnection loadConnection = tryRequest(
@@ -162,6 +176,10 @@ public class BoundingBoxGeneralTests {
     assertEquals("error_bad_request", body.get("type"));
     assertEquals("min and max latitude and longitude must be valid double values", body.get("error_description"));
   }
+  /**
+   * This method tests that a invalid (non-double) value inputted for the lower latitude returns a descriptive error
+   * @throws IOException
+   */
   @Test
   public void testInvalidLatMin() throws IOException {
     HttpURLConnection loadConnection = tryRequest(
@@ -172,6 +190,11 @@ public class BoundingBoxGeneralTests {
     assertEquals("error_bad_request", body.get("type"));
     assertEquals("min and max latitude and longitude must be valid double values", body.get("error_description"));
   }
+
+  /**
+   * This method tests that a invalid (non-double) value inputted for the lower longitude returns a descriptive error
+   * @throws IOException
+   */
   @Test
   public void testInvalidLongMin() throws IOException {
     HttpURLConnection loadConnection = tryRequest(
@@ -183,6 +206,10 @@ public class BoundingBoxGeneralTests {
     assertEquals("min and max latitude and longitude must be valid double values", body.get("error_description"));
   }
 
+  /**
+   * This method tests that an inputted upper latitude value greater than 90 returns a descriptive error message
+   * @throws IOException
+   */
   @Test
   public void testOutOfRangeLatMax() throws IOException {
     HttpURLConnection loadConnection = tryRequest(
@@ -195,6 +222,10 @@ public class BoundingBoxGeneralTests {
     assertEquals("latitude must be between -90 and 90 and longitude must be between -180 and 180", body.get("error_description"));
   }
 
+  /**
+   * This method tests that an inputted upper longitude value greater than 180 returns a descriptive error message
+   * @throws IOException
+   */
   @Test
   public void testOutOfRangeLongMax() throws IOException {
     HttpURLConnection loadConnection = tryRequest(
@@ -205,6 +236,11 @@ public class BoundingBoxGeneralTests {
     assertEquals("error_bad_request", body.get("type"));
     assertEquals("latitude must be between -90 and 90 and longitude must be between -180 and 180", body.get("error_description"));
   }
+
+  /**
+   * This method tests that an inputted lower latitude value less than -90 returns a descriptive error message
+   * @throws IOException
+   */
   @Test
   public void testOutOfRangeLatMin() throws IOException {
     HttpURLConnection loadConnection = tryRequest(
@@ -215,6 +251,11 @@ public class BoundingBoxGeneralTests {
     assertEquals("error_bad_request", body.get("type"));
     assertEquals("latitude must be between -90 and 90 and longitude must be between -180 and 180", body.get("error_description"));
   }
+
+  /**
+   * This method tests that an inputted lower longitude value less than -180 returns a descriptive error message
+   * @throws IOException
+   */
   @Test
   public void testOutOfRangeLongMin() throws IOException {
     HttpURLConnection loadConnection = tryRequest(
@@ -225,6 +266,4 @@ public class BoundingBoxGeneralTests {
     assertEquals("error_bad_request", body.get("type"));
     assertEquals("latitude must be between -90 and 90 and longitude must be between -180 and 180", body.get("error_description"));
   }
-
-
 }

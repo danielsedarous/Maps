@@ -1,26 +1,21 @@
 package edu.brown.cs.student.main.MapTesting;
 
-
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
-
 import com.squareup.moshi.JsonAdapter;
 import com.squareup.moshi.Moshi;
 import com.squareup.moshi.Types;
-import edu.brown.cs.student.main.MapsAreaKeyWordHandler;
+import edu.brown.cs.student.main.maps.handlers.MapsAreaKeyWordHandler;
 import java.io.IOException;
 import java.lang.reflect.Type;
 import java.net.HttpURLConnection;
 import java.net.URL;
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import okio.Buffer;
 import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -31,11 +26,13 @@ import spark.Spark;
  * as well as different cities.
  */
 public class AreaGeneralTests {
-
-
   private final Type mapStringObject =
       Types.newParameterizedType(Map.class, String.class, Object.class);
   private JsonAdapter<Map<String, Object>> adapter;
+
+  /**
+   * We want this to run before all our tests, so we can establish a port.
+   */
   @BeforeAll
   public static void setup_before_everything() {
     // arbitrary available port.
@@ -44,10 +41,8 @@ public class AreaGeneralTests {
   }
 
   /**
-   * Shared state for all tests. We need to be able to mutate it (adding recipes etc.) but never need to replace
-   * the reference itself. We clear this state out after every test runs.
-   */
-
+   * We want to run this setup before each test, so we can set up a search for maps keywords.
+   * */
   @BeforeEach
   public void setup() {
     Spark.get("mapsKeyWord", new MapsAreaKeyWordHandler());
@@ -58,6 +53,9 @@ public class AreaGeneralTests {
     adapter = moshi.adapter(mapStringObject);
   }
 
+  /**
+   * After the test is completed we want to disconnect Spark from the endpoints
+   */
   @AfterEach
   public void teardown() {
     // Gracefully stop Spark listening on both endpoints
@@ -65,6 +63,12 @@ public class AreaGeneralTests {
     Spark.awaitStop(); // don't proceed until the server is stopped
   }
 
+  /**
+   * Use this to build the URL connection without sending the request in
+   * @param apiCall- The queries we would like to input for our search
+   * @return the connection after searching
+   * @throws IOException - Error with any connectivity
+   */
   private static HttpURLConnection tryRequest(String apiCall) throws IOException {
     // Configure the connection (but don't actually send the request yet)
     URL requestURL = new URL("http://localhost:" + Spark.port() + "/" + apiCall);
@@ -92,6 +96,11 @@ public class AreaGeneralTests {
     assertEquals("The search query must be formatted as 'mapsKeyWord?Area=[area description]'", body.get("error_description"));
   }
 
+  /**
+   * This method tests that after making a search the data can be added to a search history hashmap that will persist
+   * in the backend
+   * @throws IOException
+   */
   @Test
   public void testSearchHistory() throws IOException{
     HttpURLConnection loadConnection = tryRequest("mapsKeyWord?Area=Boston");

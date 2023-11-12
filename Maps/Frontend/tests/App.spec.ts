@@ -23,6 +23,13 @@ test("history box appears", async ({ page }) => {
 });
 
 /**
+ * This tests that the map is visible up on the page
+ */
+test("map appears", async ({ page }) => {
+  await expect(page.getByLabel("map", { exact: true })).toBeVisible();
+});
+
+/**
  * This tests that the text in the command input bar changes after typing in
  * a some input.
  */
@@ -34,7 +41,7 @@ test("command input text changes", async ({ page }) => {
 });
 
 /**
- * Tests basic broadband querying.
+ * Tests basic broadband querying result
  */
 test("broadband", async ({ page }) => {
   await page.getByLabel("Command input").click();
@@ -76,6 +83,10 @@ test("invalid broadband command", async ({ page }) => {
   );
 });
 
+/**
+ * tests that page accurately displays a success statement when a given area is highlighted 
+ * on the map
+ */
 test("highlight area", async ({ page }) => {
   await page.getByLabel("Command input").click();
   await page.getByLabel("Command input").fill("highlight Boston");
@@ -86,6 +97,10 @@ test("highlight area", async ({ page }) => {
   );
 });
 
+/**
+ * Tests that a desctiptive error message is returned when there are no results for a given 
+ * keyword search
+ */
 test("highlight nonexistant area", async ({ page }) => {
   await page.getByLabel("Command input").click();
   await page.getByLabel("Command input").fill("highlight nonexistant");
@@ -96,6 +111,10 @@ test("highlight nonexistant area", async ({ page }) => {
   );
 });
 
+/**
+ * Tests that an informative and accurate error message is displayed to the user
+ * when an invalid number of arguments are inputted after the "highlight" command.
+ */
 test("invalid highlight command", async ({ page }) => {
   await page.getByLabel("Command input").click();
   await page.getByLabel("Command input").fill("highlight");
@@ -106,6 +125,10 @@ test("invalid highlight command", async ({ page }) => {
   );
 });
 
+/**
+ * tests that if the user does not input "broadband" or "highlight" as the first word of their command 
+ * it will retun a desctiptive error message
+ */
 test("invalid command", async ({ page }) => {
   await page.getByLabel("Command input").click();
   await page.getByLabel("Command input").fill("this is not valid");
@@ -117,6 +140,7 @@ test("invalid command", async ({ page }) => {
 });
 
 /**
+ * tests the interaction of broadband and highlight searches, both successful and not successfult
  */
 test("broadband and highlight interaction", async ({ page }) => {
   await page.goto("http://localhost:5173/");

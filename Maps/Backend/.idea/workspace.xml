@@ -6,15 +6,16 @@
   <component name="ChangeListManager">
     <list default="true" id="4d3e651b-13ab-4f20-98b5-14fd26cd335f" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Frontend/package-lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/../Frontend/package-lock.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Frontend/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/../Frontend/package.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Frontend/src/MapBox.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/../Frontend/src/MapBox.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Frontend/src/REPLInput.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/../Frontend/src/REPLInput.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Frontend/src/overlays.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../Frontend/src/overlays.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/edu/brown/cs/student/main/GeoJsonCollection.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/edu/brown/cs/student/main/maps/json/GeoJsonCollection.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/edu/brown/cs/student/main/JsonParsing.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/edu/brown/cs/student/main/maps/json/JsonParsing.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/edu/brown/cs/student/main/MapsAreaKeyWordHandler.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/edu/brown/cs/student/main/maps/handlers/MapsAreaKeyWordHandler.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/edu/brown/cs/student/main/MapsBoundingHandler.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/edu/brown/cs/student/main/maps/handlers/MapsBoundingHandler.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/edu/brown/cs/student/main/server/Server.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/edu/brown/cs/student/main/server/Server.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/test/java/edu/brown/cs/student/main/MapTesting/AreaGeneralTests.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/edu/brown/cs/student/main/MapTesting/AreaGeneralTests.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/test/java/edu/brown/cs/student/main/MapTesting/BoundingBoxFuzzAndPropertyTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/edu/brown/cs/student/main/MapTesting/BoundingBoxFuzzAndPropertyTest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/test/java/edu/brown/cs/student/main/MapTesting/BoundingBoxGeneralTests.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/edu/brown/cs/student/main/MapTesting/BoundingBoxGeneralTests.java" afterDir="false" />
     </list>
-    <list id="ab740db1-80bc-4662-8a99-69daf0687a89" name="Changes by danie" comment="">
-      <change beforePath="$PROJECT_DIR$/src/test/java/edu/brown/cs/student/main/MapTesting/BoundingBoxFuzzTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/edu/brown/cs/student/main/MapTesting/BoundingBoxFuzzAndPropertyTest.java" afterDir="false" />
-    </list>
+    <list id="ab740db1-80bc-4662-8a99-69daf0687a89" name="Changes by danie" comment="" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -24,6 +25,7 @@
     <option name="RECENT_TEMPLATES">
       <list>
         <option value="Class" />
+        <option value="package-info" />
       </list>
     </option>
   </component>
@@ -78,7 +80,7 @@
       <recent name="$PROJECT_DIR$/data/stars" />
     </key>
   </component>
-  <component name="RunManager" selected="JUnit.AreaGeneralTests.testSearchHistory">
+  <component name="RunManager">
     <configuration name="AreaGeneralTests" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
       <module name="moshi" />
       <extension name="coverage">
@@ -200,6 +202,7 @@
       <workItem from="1699458659460" duration="3411000" />
       <workItem from="1699481220345" duration="1109000" />
       <workItem from="1699741497810" duration="600000" />
+      <workItem from="1699801210607" duration="8349000" />
     </task>
     <servers />
   </component>

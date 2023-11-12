@@ -4,7 +4,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import com.squareup.moshi.JsonAdapter;
 import com.squareup.moshi.Moshi;
 import com.squareup.moshi.Types;
-import edu.brown.cs.student.main.MapsBoundingHandler;
+import edu.brown.cs.student.main.maps.handlers.MapsBoundingHandler;
 import java.io.IOException;
 import java.lang.reflect.Type;
 import java.net.HttpURLConnection;
@@ -42,7 +42,6 @@ public class BoundingBoxFuzzAndPropertyTest {
   /**
    * We want to run this setup before each test, so we can set up a search for boundingbox.
    * */
-
   @BeforeEach
   public void setup() {
 //    Spark.get("mapsKeyWord", new MapsAreaKeyWordHandler());

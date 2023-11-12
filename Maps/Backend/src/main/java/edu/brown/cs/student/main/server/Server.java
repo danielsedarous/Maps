@@ -2,8 +2,8 @@ package edu.brown.cs.student.main.server;
 
 import static spark.Spark.after;
 
-import edu.brown.cs.student.main.MapsAreaKeyWordHandler;
-import edu.brown.cs.student.main.MapsBoundingHandler;
+import edu.brown.cs.student.main.maps.handlers.MapsAreaKeyWordHandler;
+import edu.brown.cs.student.main.maps.handlers.MapsBoundingHandler;
 import edu.brown.cs.student.main.data.census.ACSSource;
 import edu.brown.cs.student.main.exceptions.DatasourceException;
 import edu.brown.cs.student.main.data.csv.proxy.CsvData;

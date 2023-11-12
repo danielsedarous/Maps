@@ -7,6 +7,10 @@ import {
   useEffect,
 } from "react";
 import { ControlledInput } from "./ControlledInput";
+
+// /**
+//  * props that need to be set and accessed across classes
+//  */
 export interface REPLInputProps {
   history: ReactElement[];
   setHistory: Dispatch<SetStateAction<ReactElement[]>>;
@@ -20,6 +24,14 @@ export interface REPLInputProps {
   >;
 }
 
+/**
+ * function that deals with the logic of the user's input to differentiate between
+ * broadband and highlight searches, error handle to ensure they are inputting the
+ * correct number of arguments, and ultimately return the data or a descriptive
+ * error message
+ * @param props
+ * @returns
+ */
 export function REPLInput(props: REPLInputProps) {
   const [commandString, setCommandString] = useState<string>("");
   var splitString: string[];
@@ -31,17 +43,18 @@ export function REPLInput(props: REPLInputProps) {
       if (splitString.length == 3) {
         props.setResult(broadbandResult);
       } else {
-        props.setResult([["Please enter a valid broadband command: broadband <state> <county>"]]);
+        props.setResult([
+          [
+            "Please enter a valid broadband command: broadband <state> <county>",
+          ],
+        ]);
       }
     } else if (splitString[0] == "highlight") {
       const highlightLength: number = (await highlight(splitString)).features
         .length;
-      props.setHighlightResult((await highlight(splitString)).features);
-      console.log("highlight length:" + highlightLength);
-      console.log("highlight result:" + props.highlightResult);
 
       if (splitString.length > 1 && highlightLength > 0) {
-        // props.setHighlightResult(((await highlight(splitString)).features));
+        props.setHighlightResult((await highlight(splitString)).features);
         await props.setResult([
           ["Search successful! Look on your map for the highlighted areas!"],
         ]);
@@ -61,6 +74,9 @@ export function REPLInput(props: REPLInputProps) {
     }
   }
 
+    /**
+     * parses result to a table and adds it to the history, and resets command string
+     */
   useEffect(() => {
     let finalResult = props.Result;
     var resultTable = CSVToTable(finalResult);
@@ -104,6 +120,11 @@ export function REPLInput(props: REPLInputProps) {
     return results;
   }
 
+  /**
+   * parses data into table format
+   * @param data
+   * @returns
+   */
   function CSVToTable(data: string[][]) {
     return (
       <table aria-label="Result Table">
@@ -132,6 +153,11 @@ export function REPLInput(props: REPLInputProps) {
     }
   }
 
+  /**
+   * helper function that queries our backend server for the broadband percentage of a state and county
+   * @param args
+   * @returns
+   */
   async function broadband(args: string[]): Promise<string[][]> {
     return fetch(
       "http://localhost:1234/broadband?state=" + args[1] + "&county=" + args[2]
@@ -161,6 +187,12 @@ export function REPLInput(props: REPLInputProps) {
       });
   }
 
+  /**
+   * helper function that queries our backend server for a collection of features with
+   * a cetain keword
+   * @param args
+   * @returns
+   */
   async function highlight(args: string[]): Promise<GeoJSON.FeatureCollection> {
     return fetch("http://localhost:1234/mapsKeyWord?Area=" + args[1])
       .then((r) => r.json())

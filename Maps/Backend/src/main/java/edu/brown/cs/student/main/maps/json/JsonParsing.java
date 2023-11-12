@@ -1,4 +1,4 @@
-package edu.brown.cs.student.main;
+package edu.brown.cs.student.main.maps.json;
 
 import com.squareup.moshi.JsonAdapter;
 import com.squareup.moshi.JsonReader;
@@ -10,6 +10,9 @@ import java.lang.reflect.Type;
 import java.util.HashMap;
 import java.util.Map;
 
+/**
+ * Class responsible for parsing the GEOJson data
+ */
 public class JsonParsing {
   public JsonParsing(){
 
@@ -37,6 +40,14 @@ public class JsonParsing {
     return adapter.toJson(responseMap);
   }
 
+  /**
+   * Deserializes JSON data into an object of the specified type.
+   * @param source JSON data source
+   * @param targetType target Class type
+   * @return deserialized object
+   * @param <T> object of specified type
+   * @throws IOException if deserialization goes wrong
+   */
   public static <T> T fromJsonGeneral(JsonReader source, Class<T> targetType) throws IOException {
     Moshi moshi = new Moshi.Builder().build();
     JsonAdapter<T> adapter = moshi.adapter(targetType);

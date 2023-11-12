@@ -23,7 +23,7 @@ import spark.Response;
 import spark.Route;
 
 public class MapsAreaKeyWordHandler implements Route {
-  private Map<String,Object> searchHistory;
+  public Map<String,Object> searchHistory;
 public MapsAreaKeyWordHandler(){
   this.searchHistory = new HashMap<>();
 }
@@ -35,7 +35,7 @@ public MapsAreaKeyWordHandler(){
       Type mapStringObject = Types.newParameterizedType(Map.class, String.class, Object.class);
       JsonAdapter<Map<String, Object>> adapter = moshi.adapter(mapStringObject);
       JsonReader reader = JsonReader.of(new Buffer().writeUtf8(Files.readString(Path.of(
-          "/Users/francescaelia/Documents/CS32/maps-dsedarou-felia/Maps/Backend/src/main/java/edu/brown/cs/student/main/geodata/fullDownload.json"))));
+          "C:\\cs32\\maps-dsedarou-felia\\Maps\\Backend\\src\\main\\java\\edu\\brown\\cs\\student\\main\\geodata\\fullDownload.json"))));
       GeoJsonCollection geoFeature = JsonParsing.fromJsonGeneral(reader, GeoJsonCollection.class);
 
 
@@ -46,7 +46,7 @@ public MapsAreaKeyWordHandler(){
         return adapter.toJson(responseMap);
       }
 
-      if (!(geoFeature.features.toString().contains(area))){
+      if (!(JsonParsing.toJsonGeneral(geoFeature).contains(area))){
         Map<String, Object> responseMap = new HashMap<>();
         responseMap.put("type", "error_bad_request");
         responseMap.put("error_description", "There were no areas that matched this area description");
@@ -60,8 +60,18 @@ public MapsAreaKeyWordHandler(){
       responseMap.put("data", JsonParsing.toJsonGeneral(geoFeature));
       return adapter.toJson(responseMap);
     } catch(Exception e) {
-      return e;
+      Moshi moshi = new Moshi.Builder().build();
+      Type mapStringObject = Types.newParameterizedType(Map.class, String.class, Object.class);
+      JsonAdapter<Map<String, Object>> adapter = moshi.adapter(mapStringObject);
+      Map<String, Object> responseMap = new HashMap<>();
+      responseMap.put("type", "failure");
+      responseMap.put("error_description", "The search query must be formatted as 'mapsKeyWord?Area=[area description]'");
+      return adapter.toJson(responseMap);
     }
+  }
+
+  public Map<String,Object> getSearchHistory(){
+  return this.searchHistory;
   }
 
 

@@ -28,17 +28,10 @@ export function REPLInput(props: REPLInputProps) {
     splitString = splitIntoWords(commandString);
     if (splitString[0] == "broadband") {
       var broadbandResult = await broadband(splitString);
-      if (splitString.length == 3 && broadbandResult.length > 1) {
-        await props.setResult([
-          [
-            "Broadband percentage for " +
-              broadbandResult[1][0] +
-              ": " +
-              broadbandResult[1][1],
-          ],
-        ]);
+      if (splitString.length == 3) {
+        props.setResult(broadbandResult);
       } else {
-        await props.setResult(broadbandResult);
+        props.setResult([["Please enter a valid broadband command: broadband <state> <county>"]]);
       }
     } else if (splitString[0] == "highlight") {
       const highlightLength: number = (await highlight(splitString)).features
@@ -47,7 +40,7 @@ export function REPLInput(props: REPLInputProps) {
       console.log("highlight length:" + highlightLength);
       console.log("highlight result:" + props.highlightResult);
 
-      if (splitString.length == 2 && highlightLength > 0) {
+      if (splitString.length > 1 && highlightLength > 0) {
         // props.setHighlightResult(((await highlight(splitString)).features));
         await props.setResult([
           ["Search successful! Look on your map for the highlighted areas!"],
@@ -148,15 +141,21 @@ export function REPLInput(props: REPLInputProps) {
         var answer;
         console.log("response type" + response.type);
         if (response.type == "success") {
-          answer = response.data;
-          console.log("response length: " + response.data.length);
+          // answer = response.data;
+          answer = [
+            [
+              "Broadband percentage for " +
+                response.data[1][0] +
+                ": " +
+                response.data[1][1],
+            ],
+          ];
         } else {
           answer = [
             [
               "Broadband error - check server API connection or ensure provided state and county are valid",
             ],
           ];
-          console.log("failure: " + answer.length);
         }
         return answer;
       });

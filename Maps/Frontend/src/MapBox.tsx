@@ -25,9 +25,6 @@ function MapBox(props: MapBoxProps) {
   }
 
   const [viewState, setViewState] = useState({
-    // longitude: ProvidenceLatLong.long,
-    // latitude: ProvidenceLatLong.lat,
-    // zoom: initialZoom,
   });
 
   const highlightData: GeoJSON.FeatureCollection = {
@@ -42,15 +39,8 @@ function MapBox(props: MapBoxProps) {
 
   useEffect(() => {
     setOverlay(overlayData());
-    console.log("overlay" + overlay)
-    console.log("featureData: " + featureData.features);
-    console.log("featureType: " + featureData.type);
 
   }, [props.highlightResult]);
-
-  // function getBoundingBoxData(): GeoJSON.FeatureCollection | undefined {
-  //   return overlayData();
-  // }
 
   return (
     <Map

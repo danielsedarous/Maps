@@ -5,11 +5,16 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="4d3e651b-13ab-4f20-98b5-14fd26cd335f" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/src/test/java/edu/brown/cs/student/main/MapTesting/AreaGeneralTests.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/edu/brown/cs/student/main/MapsAreaKeyWordHandler.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/edu/brown/cs/student/main/MapsAreaKeyWordHandler.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Frontend/package-lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/../Frontend/package-lock.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Frontend/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/../Frontend/package.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Frontend/src/MapBox.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/../Frontend/src/MapBox.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Frontend/src/REPLInput.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/../Frontend/src/REPLInput.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Frontend/src/overlays.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../Frontend/src/overlays.ts" afterDir="false" />
     </list>
-    <list id="ab740db1-80bc-4662-8a99-69daf0687a89" name="Changes by danie" comment="" />
+    <list id="ab740db1-80bc-4662-8a99-69daf0687a89" name="Changes by danie" comment="">
+      <change beforePath="$PROJECT_DIR$/src/test/java/edu/brown/cs/student/main/MapTesting/BoundingBoxFuzzTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/edu/brown/cs/student/main/MapTesting/BoundingBoxFuzzAndPropertyTest.java" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />

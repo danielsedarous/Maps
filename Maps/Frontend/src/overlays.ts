@@ -6,27 +6,26 @@ function isFeatureCollection(json: any): json is FeatureCollection {
 }
 
 
-function boundingBoxCall(): Promise<GeoJSON.Feature<GeoJSON.Geometry, GeoJSON.GeoJsonProperties>[]> {
+function boundingBoxCall(): Promise<GeoJSON.FeatureCollection> {
   return fetch(
     "http://localhost:1234/mapsBoundingBox?lowerLatitude=-90&upperLatitude=90&lowerLongitude=-180&upperLongitude=180"
   )
     .then((r) => r.json())
     .then((response) => {
+      let parseAnswer: GeoJSON.FeatureCollection;
       var answer;
-      console.log("response type" + response.type);
-      if (response.type == "success") {
-        return response.data;
-    }});
+      answer = response.data
+      parseAnswer = JSON.parse(answer)
+      return parseAnswer;
+    });
 }
 
 export const featureData: GeoJSON.FeatureCollection = {
   type: "FeatureCollection",
-  features: await boundingBoxCall(),
+  features: (await boundingBoxCall()).features,
 };
 
  export function overlayData() {
-  console.log("feat: " + featureData.features)
-  console.log(isFeatureCollection(featureData) ? featureData : undefined)
   return isFeatureCollection(featureData) ? featureData : undefined;
 }
 

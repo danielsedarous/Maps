@@ -61,7 +61,7 @@ function MapBox(props: MapBoxProps) {
       mapStyle={"mapbox://styles/mapbox/streets-v12"}
       onClick={(ev: MapLayerMouseEvent) => onMapClick(ev)}
     >
-      <Source id="geo_data" type="geojson" data={overlay}>
+      <Source id="geo_data" type="geojson" data={featureData}>
         <Layer {...geoLayer} />
       </Source>
       <Source id="highlight" type="geojson" data={highlightData}>

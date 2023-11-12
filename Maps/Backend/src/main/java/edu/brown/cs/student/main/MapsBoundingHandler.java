@@ -33,7 +33,7 @@ public class MapsBoundingHandler implements Route {
             Type mapStringObject = Types.newParameterizedType(Map.class, String.class, Object.class);
             JsonAdapter<Map<String, Object>> adapter = moshi.adapter(mapStringObject);
             JsonReader reader = JsonReader.of(new Buffer().writeUtf8(Files.readString(Path.of(
-                    "C:\\cs32\\maps-dsedarou-felia\\Maps\\Backend\\src\\main\\java\\edu\\brown\\cs\\student\\main\\geodata\\fullDownload.json"))));
+                    "/Users/francescaelia/Documents/CS32/maps-dsedarou-felia/Maps/Backend/src/main/java/edu/brown/cs/student/main/geodata/fullDownload.json"))));
             GeoJsonCollection geoFeature = JsonParsing.fromJsonGeneral(reader, GeoJsonCollection.class);
 
             if (request.queryParams("lowerLatitude").isEmpty() || request.queryParams("upperLatitude").isEmpty()

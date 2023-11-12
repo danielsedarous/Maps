@@ -23,8 +23,9 @@ import spark.Response;
 import spark.Route;
 
 public class MapsAreaKeyWordHandler implements Route {
+  private Map<String,Object> searchHistory;
 public MapsAreaKeyWordHandler(){
-
+  this.searchHistory = new HashMap<>();
 }
   @Override
   public Object handle(Request request, Response response) throws Exception {
@@ -39,33 +40,38 @@ public MapsAreaKeyWordHandler(){
 
 
       if (area.isEmpty()) {
-        return JsonParsing.toJsonGeneral(geoFeature);
+        Map<String, Object> responseMap = new HashMap<>();
+        responseMap.put("type", "error_bad_request");
+        responseMap.put("error_description", "Please input an area key word");
+        return adapter.toJson(responseMap);
+      }
+
+      if (!(geoFeature.features.toString().contains(area))){
+        Map<String, Object> responseMap = new HashMap<>();
+        responseMap.put("type", "error_bad_request");
+        responseMap.put("error_description", "There were no areas that matched this area description");
+        return adapter.toJson(responseMap);
       }
       Map<String, Object> responseMap = new HashMap<>();
 
       responseMap.put("type", "success");
       geoFeature.features = filterFeatureByArea(geoFeature, area);
+      this.searchHistory.put(area, geoFeature.features);
       responseMap.put("data", JsonParsing.toJsonGeneral(geoFeature));
-//      responseMap.put()
       return adapter.toJson(responseMap);
     } catch(Exception e) {
       return e;
     }
-
   }
-
 
 
   public static List<Feature> filterFeatureByArea(GeoJsonCollection geoJsonCollection, String area){
     List<Feature> filteredFeatures = new ArrayList<>(geoJsonCollection.features);
-    //System.out.println(filteredFeatures);
     Iterator<Feature> iterator = filteredFeatures.iterator();
     while (iterator.hasNext()) {
       Feature feature = iterator.next();
       Properties properties = feature.properties;
-      //System.out.println(properties);
       Map<String, String> description = properties.area_description_data;
-      //System.out.println(description);
       if (description==null){
         iterator.remove();
         continue;
@@ -76,14 +82,11 @@ public MapsAreaKeyWordHandler(){
       for (String line: description.values())  {
         allData += line;
       }
-      if (!allData.contains(area))
-      {iterator.remove();
+      if (!allData.contains(area)) {
+        iterator.remove();
         continue;
       }
-//      feature.properties.name = "Highlight";
-//      feature.properties.holc_grade = "H";
     }
-    //System.out.println(filteredFeatures);
     return filteredFeatures;
   }
 

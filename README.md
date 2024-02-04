@@ -3,7 +3,7 @@ Project description --
 Project name: Maps
 Team members and contributions: felia and dsedarou
 Total estimated time it took to complete project: 20 hours
-A link to your repo: https://github.com/cs0320-f23/maps-dsedarou-felia
+A link to your repo: https://github.com/danielsedarous/Maps.git
 
 Design choices -- 
 Explain the relationships between classes/interfaces: Our MapBox and Overlay classes interact to visually display the map and its functionalities on the page (highlighting the redlining data and highlighting areas that match the user's key word search). Our map also requires the ability to query our backend server, specifically, our MapsAreaKeywordHandler and MapsBoundingBoxHandler endpoints. Our Map originally loads in its data through a bounding box query of the entire world, and then queries our area keyword handler to highlight specific areas on the map. We used our structure from the REPL sprint in order to implement a command line box that allows the user to search for either a specific area, or for the broadband percentage of a given state and county (done by querying our backend BroadbandHandler). This is accomplished through the interaction of REPL, REPLHistory, REPLInput, and ControlledInput which take in the users input and set/clear the result history accordingly.
